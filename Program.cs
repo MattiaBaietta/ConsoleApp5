@@ -92,15 +92,18 @@ public class Contribuente
             }
         }
         while (isdateok == false);
-        
+
 
 
         do
         {
             Console.WriteLine("Inserisci il tuo codice fiscale (Formato codice fiscale obbligatorio es:RSSMRA82A01H501L)");
             CodiceFiscale = Console.ReadLine().ToUpper();
+            Regex regex2 = new Regex(@"^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})$|([0-9]{11})$");
 
-            if (CodiceFiscale.Length == 16 && CodiceFiscale.All(char.IsLetterOrDigit))
+
+
+            if (regex2.IsMatch(CodiceFiscale))
             {
                 iscfok = true;
             }
@@ -109,7 +112,7 @@ public class Contribuente
                 Console.WriteLine("Codice fiscale non valido");
             }
         }
-        while (iscfok==false);
+        while (iscfok == false);
         do
         {
             Console.WriteLine("Inserisci il tuo sesso (M/F)");
