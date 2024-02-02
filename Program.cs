@@ -1,4 +1,6 @@
 ﻿
+using System.Text.RegularExpressions;
+
 internal class Program
 {
     static void Main(string[] args)
@@ -31,32 +33,80 @@ public class Contribuente
     private static string ComuneResidenza;
     private static int RedditoAnnuale;
     private static int Imposta;
-    private static int Aliquota;
     private static bool isint = false;
+    private static bool isname = false;
+    private static bool issur = false;
     private static bool iscfok = false;
-    private static bool issok = false;    
+    private static bool issok = false;
+    private static bool isdateok = false;
     private static string input;
+    
 
 
     public static void InserimentoDati()
     {
-        Console.WriteLine("Inserisci il tuo nome");
-        Nome = Console.ReadLine();
-        Console.WriteLine("Inserisci il tuo cognome");
-        Cognome = Console.ReadLine();
-        Console.WriteLine("Inserisci la tua data di nascita (Formato DD/MM/YYYY)");
-        DataNascita = Console.ReadLine();
         do
+            
         {
-            Console.WriteLine("Inserisci il tuo codice fiscale (16 caratteri obbligatori)");
-            CodiceFiscale = Console.ReadLine().ToUpper();
-            if (CodiceFiscale.Length != 16)
+            Console.WriteLine("Inserisci il tuo nome");
+            Nome = Console.ReadLine();
+            if (Nome.Length >= 1 && Nome!=" ")
             {
-                Console.WriteLine("Codice fiscale non corretto");
+                isname = true;
             }
             else
             {
+                Console.WriteLine("Nome non valido");
+            }
+                
+        }
+        while (isname == false);
+        do
+        {
+            Console.WriteLine("Inserisci il tuo cognome");
+            Cognome = Console.ReadLine();
+            if (Cognome.Length >= 1 && Cognome != " ")
+            {
+                issur = true;
+            }
+            else
+            {
+                Console.WriteLine("Cognome non valido");
+            }
+
+        }
+        while (issur == false);
+
+        do
+        {
+            Console.WriteLine("Inserisci la tua data di nascita (Formato DD/MM/YYYY obbligatorio)");
+            DataNascita = Console.ReadLine();
+            Regex regex = new Regex(@"^\d{2}/\d{2}/\d{4}$");
+            if (regex.IsMatch(DataNascita))
+            {
+                isdateok = true;
+            }
+            else
+            {
+                Console.WriteLine("Data di nascita non valida");
+            }
+        }
+        while (isdateok == false);
+        
+
+
+        do
+        {
+            Console.WriteLine("Inserisci il tuo codice fiscale (Formato codice fiscale obbligatorio es:RSSMRA82A01H501L)");
+            CodiceFiscale = Console.ReadLine().ToUpper();
+
+            if (CodiceFiscale.Length == 16 && CodiceFiscale.All(char.IsLetterOrDigit))
+            {
                 iscfok = true;
+            }
+            else
+            {
+                Console.WriteLine("Codice fiscale non valido");
             }
         }
         while (iscfok==false);
@@ -102,29 +152,29 @@ public class Contribuente
         switch (RedditoAnnuale)
         {
             case > 75000:
-                Aliquota = 43;
+                
                 Imposta = 25420 + (((RedditoAnnuale - 75000) / 100) * 43);
                 break;
             case < 15000:
-                Aliquota = 23;
+                
                 Imposta = (RedditoAnnuale / 100)*23;
                 break;
             default:
                 if(RedditoAnnuale>=55001)
                 {
-                    Aliquota = 41;
+                    
                     Imposta = 17220 + (((RedditoAnnuale - 55000) / 100) * 41);
                 }
                 else
                 {
                     if(RedditoAnnuale>=28001&&RedditoAnnuale<=55000)
                     {
-                        Aliquota = 38;
+                        
                         Imposta = 6960 + (((RedditoAnnuale - 28000) / 100) * 38);
                     }
                     else
                     {
-                        Aliquota = 27;
+                        
                         Imposta = 3450 + (((RedditoAnnuale - 15000) / 100) * 27);
                     }
                 }
